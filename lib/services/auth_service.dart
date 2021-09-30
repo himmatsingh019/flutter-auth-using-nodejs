@@ -32,7 +32,6 @@ class AuthService {
       );
       return response.data;
     } on DioError catch (error) {
-      print(error.response);
       return error.response!.data;
     }
   }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth_using_nodejs/provider/login_provider.dart';
+import 'package:flutter_auth_using_nodejs/services/local_storage-provider.dart';
 import 'package:flutter_auth_using_nodejs/routes/routes.dart';
-import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalStorage.init();
   runApp(const MyApp());
 }
 
@@ -12,16 +13,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<LoginProvider>(
-      create: (context) => LoginProvider(),
-      child: MaterialApp(
-        theme: ThemeData(
-          primaryColor: Colors.black,
-        ),
-        debugShowCheckedModeBanner: false,
-        routes: AppRoutes.routes,
-        initialRoute: AppRoutes.LoginRoute,
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.black,
       ),
+      debugShowCheckedModeBanner: false,
+      routes: AppRoutes.routes,
+      initialRoute: AppRoutes.LoginRoute,
     );
   }
 }

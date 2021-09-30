@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_auth_using_nodejs/services/local_storage-provider.dart';
 import 'package:flutter_auth_using_nodejs/routes/routes.dart';
 import 'package:flutter_auth_using_nodejs/services/auth_service.dart';
 
@@ -11,6 +12,12 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (LocalStorage.isUserSignedIn == true) {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(AppRoutes.HomeRoute, (route) => false);
+      }
+    });
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -54,6 +61,7 @@ class LoginScreen extends StatelessWidget {
                       final data = await AuthService()
                           .login(emailController.text, passwordController.text);
                       if (data['success']) {
+                        LocalStorage.setUserSignedInStatus(true);
                         Navigator.pushNamedAndRemoveUntil(
                           context,
                           AppRoutes.HomeRoute,
